@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ultraplast Sales Calculator</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 30px 15px;
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      color: #222;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: auto;
+      background: white;
+      padding: 28px;
+      border-radius: 14px;
+      box-shadow: 0 5px 20px #00000012;
+    }
+
+    h1 {
+      color: #c62828;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #666;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 7px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 13px;
+      background: #c62828;
+      color: white;
+      border: none;
+      border-radius: 7px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #a51f1f;
+    }
+
+    .results {
+      margin-top: 25px;
+      padding: 18px;
+      background: #f8f8f8;
+      border-left: 4px solid #c62828;
+      border-radius: 6px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 12px 0;
+    }
+
+    .value {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    .footer {
+      margin-top: 25px;
+      color: #777;
+      font-size: 12px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="container">
+    <h1>ULTRAPLAST</h1>
+    <div class="subtitle">Sales Target Calculator</div>
+
+    <label for="target">Sales Target (₹)</label>
+    <input id="target" type="number" min="0"
+           step="0.01" value="80000000">
+
+    <label for="actual">Actual Sales (₹)</label>
+    <input id="actual" type="number" min="0"
+           step="0.01" value="20000000">
+
+    <button onclick="calculateSales()">
+      Calculate Performance
+    </button>
+
+    <section class="results" aria-live="polite">
+      <div class="result-row">
+        <span>Achievement</span>
+        <span class="value" id="achievement">25.00%</span>
+      </div>
+
+      <div class="result-row">
+        <span>Remaining Target</span>
+        <span class="value" id="remaining">₹6,00,00,000</span>
+      </div>
+
+      <div class="result-row">
+        <span>Performance Status</span>
+        <span class="value" id="status">In Progress</span>
+      </div>
+    </section>
+
+    <div class="footer">
+      Ultraplast Chainbelts Private Limited
+    </div>
+  </main>
+
+  <script>
+    function formatRupees(amount) {
+      return amount.toLocaleString("en-IN", {
+        style: "currency",
+        currency: "INR",
+        maximumFractionDigits: 2
+      });
+    }
+
+    function calculateSales() {
+      const target = Number(
+        document.getElementById("target").value
+      );
+
+      const actual = Number(
+        document.getElementById("actual").value
+      );
+
+      if (
+        !Number.isFinite(target) ||
+        !Number.isFinite(actual) ||
+        target <= 0 ||
+        actual < 0
+      ) {
+        alert("Enter a target greater than zero and valid sales.");
+        return;
+      }
+
+      const achievement = (actual / target) * 100;
+      const remaining = Math.max(target - actual, 0);
+
+      document.getElementById("achievement").textContent =
+        achievement.toFixed(2) + "%";
+
+      document.getElementById("remaining").textContent =
+        formatRupees(remaining);
+
+      document.getElementById("status").textContent =
+        achievement >= 100 ? "Target Achieved" : "In Progress";
+    }
+
+    calculateSales();
+  </script>
+</body>
+</html>
